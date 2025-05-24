@@ -2,7 +2,11 @@ import { useState } from "react";
 import styles from "../styles/components/AddHabit.module.css";
 import type { Habit } from "../Types/Habit";
 
-export default function AddHabit() {
+interface AddHabitProps {
+  onAddHabit: (newHabit: Habit) => void;  
+}
+
+export default function AddHabit({ onAddHabit}: AddHabitProps) {
   const [habitName, setHabitName] = useState<string>("");
   const [selectedColorId, setSelectedColorId] = useState<string>("");
 
@@ -29,10 +33,7 @@ export default function AddHabit() {
       name: habitName,
       color: selectedColor?.hex,
     };
-
-    const existingHabits: Habit[] = JSON.parse(localStorage.getItem("habits") || "[]");
-    existingHabits.push(newHabit);
-    localStorage.setItem("habits", JSON.stringify(existingHabits));
+    onAddHabit(newHabit);
 
     setHabitName("");
     setSelectedColorId("");

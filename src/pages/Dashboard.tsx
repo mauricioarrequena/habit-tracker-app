@@ -16,20 +16,25 @@ export default function Dashboard() {
     getHabits();
   }, []);
 
+  const addHabit = (newHabit: Habit) => {
+    const habits: Habit[] = JSON.parse(localStorage.getItem("habits") || "[]");
+    habits.push(newHabit);
+    localStorage.setItem("habits", JSON.stringify(habits));
+    setHabits(habits);
+  }
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.dashboard__header}>
         <span>dashboard header</span>
       </div>
       <div className={styles.dashboard__controls}>
-        <AddHabit />
+        <AddHabit onAddHabit={addHabit} />
       </div>
       <div className={styles.dashboard__content}>
         {
           habits.map((habit) => {
-            return (
-              HabitCard({ title: habit.name })
-            )
+            return <HabitCard key={habit.id} title={habit.name} color={habit.color} />
           })
         }
       </div>

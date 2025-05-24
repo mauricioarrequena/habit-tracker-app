@@ -1,12 +1,13 @@
 .dashboard {
   width: 100%;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
   grid-template-columns: 1fr;
   grid-template-areas:
     "alias-header"
     "alias-controls"
     "alias-content";
+    gap: 3rem;
 }
 
 .dashboard__header {
