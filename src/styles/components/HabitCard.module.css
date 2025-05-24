@@ -1,0 +1,133 @@
+.habitCard {
+  display: flex;
+  background-color: yellow;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card__header {
+  padding: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #D32F2F;
+}
+
+.closeIcon {
+  font-size: 1rem;
+  border: none;
+  background: transparent;
+}
+
+.closeIcon:focus {
+  outline: none;
+  border: none;
+}
+
+.closeIcon:hover {
+  cursor: pointer;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem;
+  row-gap: 0.8rem;
+}
+
+
+/*#####checbox styles  */
+.checboxList {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 0.2rem;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  user-select: none;
+}
+
+.checkboxInput {
+  display: none;
+}
+
+.checkboxCustom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #6200ea;
+  border-radius: 4px;
+  position: relative;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.checkboxInput:checked + .checkboxCustom {
+  background-color: #6200ea;
+  border-color: #6200ea;
+}
+
+.checkboxCustom::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.checkboxInput:checked + .checkboxCustom::after {
+  opacity: 1;
+}
+
+.checkboxLabel {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+
+/* progress bar */
+.progressBar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+.progressBar__track {
+  height: 10px;
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progressBar__fill {
+  height: 100%;
+  background-color: #6200ea;
+  width: 0%;
+  transition: width 0.4s ease-in-out;
+  border-radius: 5px 0 0 5px;
+}
+
+.progressBar__label {
+  font-size: 0.875rem;
+  color: #333;
+  text-align: right;
+}

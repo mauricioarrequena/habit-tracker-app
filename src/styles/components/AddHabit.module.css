@@ -1,0 +1,102 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.25rem;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card__title {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.card__form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.25rem;
+}
+
+.card__input {
+  display: flex;
+}
+
+.input__field {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.input__field:focus {
+  border-color: #3f51b5;
+}
+
+.card__color {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.color__label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.color__list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.color__item {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  background-color: var(--background-color);
+}
+
+.color__item:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.color__item--selected {
+  outline: 3px solid var(--selected-color);
+  outline-offset: 3px;
+}
+
+.card__action {
+  display: flex;
+}
+
+.button {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 600;
+  color: #fff;
+  background-color: #3f51b5;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: #303f9f;
+}

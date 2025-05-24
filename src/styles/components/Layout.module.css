@@ -1,0 +1,30 @@
+.outergrid {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 8rem 1fr;
+  grid-template-columns: 10rem 1fr;
+  grid-template-areas:
+    "alias-header   alias-header"
+    "alias-sidebar  alias-content";
+}
+
+.header {
+  grid-area: alias-header;
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar {
+  grid-area: alias-sidebar;
+}
+
+.content {
+  grid-area: alias-content;
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background-color: lightblue;
+}
+
+
+
