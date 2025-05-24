@@ -1,0 +1,39 @@
+.dashboard {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "alias-header"
+    "alias-controls"
+    "alias-content";
+}
+
+.dashboard__header {
+  grid-area: alias-header;
+}
+
+.dashboard__controls {
+  grid-area: alias-controls;
+}
+
+.dashboard__content {
+  grid-area: alias-content;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+  gap: 1rem;
+}
+
+
+
+@media (min-width: 576px) {
+.dashboard {
+  grid-template-rows: 10rem 1fr;
+  grid-template-columns: 20rem 1fr;
+  grid-template-areas:
+    "alias-header     alias-header"
+    "alias-controls   alias-content";
+}
+}
+

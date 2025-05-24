@@ -1,15 +1,10 @@
 import { useState } from "react";
 import styles from "../styles/components/AddHabit.module.css";
+import type { Habit } from "../Types/Habit";
 
 export default function AddHabit() {
   const [habitName, setHabitName] = useState<string>("");
   const [selectedColorId, setSelectedColorId] = useState<string>("");
-
-  type Habit = {
-    id: string,
-    name: string,
-    color: string,
-  };
 
   type Color = {
     id: string,
