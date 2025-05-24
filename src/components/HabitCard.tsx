@@ -1,10 +1,14 @@
 import styles from "../styles/components/HabitCard.module.css";
 
-export default function HabitCard() {
+interface HabitCardProp {
+  title: string;
+}
+
+export default function HabitCard({title}: HabitCardProp) {
   return (
     <div className={styles.card}>
       <div className={styles.card__header}>
-        <span className={styles.title}>Habit title</span>
+        <span className={styles.title}>{title}</span>
         <button className={styles.closeIcon}>x</button>
       </div>
       <div className={styles.content}>
