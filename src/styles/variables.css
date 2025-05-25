@@ -1,8 +1,15 @@
 :root {
   --gray-color: #f9fafb;
+  --border-color: #bcc2cc;
+  --header-h-mobile: 3rem;
+  --header-h-desktop: 4rem;
+
+  --sidebar-w-mobile: 10rem;
+  --sidebar-w-desktop: 16rem;
+
   --primary-color: #007bff;
   --secondary-color: #6c757d;
-  --font-main: 'Roboto', sans-serif;
+  --font-main: "Roboto", sans-serif;
   --border-radius: 8px;
   --padding: 1rem;
 }
