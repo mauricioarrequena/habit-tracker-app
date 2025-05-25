@@ -100,10 +100,7 @@
   color: #333;
 }
 
-
-/* progress bar */
 .progressBar {
-  width: 100%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -111,23 +108,25 @@
 }
 
 .progressBar__track {
+  flex-basis: 48%;
   height: 10px;
-  width: 100%;
-  background-color: #e0e0e0;
   border-radius: 5px;
   overflow: hidden;
+  background-color: #e0e0e0;
 }
 
 .progressBar__fill {
   height: 100%;
-  width: 75%;
+  width: var(--progress);
   background-color: var(--card-color);
   transition: width 0.4s ease-in-out;
   border-radius: 5px 0 0 5px;
 }
 
 .progressBar__label {
-  font-size: 0.875rem;
+  flex-basis: 52%;
+  font-size: 0.8rem;
   color: #333;
   text-align: right;
+
 }

@@ -2,4 +2,5 @@
     id: string,
     name: string,
     color: string,
+    completedDays: string[];
   };

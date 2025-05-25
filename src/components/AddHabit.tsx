@@ -32,6 +32,7 @@ export default function AddHabit({ onAddHabit}: AddHabitProps) {
       id: crypto.randomUUID(),
       name: habitName,
       color: selectedColor?.hex,
+      completedDays: [],
     };
     onAddHabit(newHabit);
 

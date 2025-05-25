@@ -1,13 +1,23 @@
 import styles from "../styles/components/HabitCard.module.css";
 
+const daysLabels: string[] = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Sataturday",
+  "Sunday"
+];
+
 interface HabitCardProp {
   title: string;
   color: string;
+  completedDays: string[];
+  onToggleDay: (day: string) => void
 }
 
-const daysLabels: string[] = ["M", "T", "W", "T", "F", "S", "S"];
-
-export default function HabitCard({ title, color }: HabitCardProp) {
+export default function HabitCard({ title, color, completedDays, onToggleDay }: HabitCardProp) {
   return (
     <div className={styles.card}>
       <div className={styles.card__header}
@@ -28,8 +38,13 @@ export default function HabitCard({ title, color }: HabitCardProp) {
                 <label
                   key={index}
                   className={styles.checkbox}>
-                  <span className={styles.checkboxLabel}>{dayLabel}</span>
-                  <input type="checkbox" className={styles.checkboxInput} />
+                  <span className={styles.checkboxLabel}>{dayLabel[0]}</span>
+                  <input
+                    type="checkbox"
+                    checked={completedDays.includes(dayLabel)}
+                    className={styles.checkboxInput}
+                    onChange={() => onToggleDay(dayLabel)}
+                  />
                   <span className={styles.checkboxCustom} style={{
                     "--card-color": color,
                   } as React.CSSProperties}></span>
@@ -44,10 +59,11 @@ export default function HabitCard({ title, color }: HabitCardProp) {
             <div className={styles.progressBar__fill}
               style={{
                 "--card-color": color,
+                "--progress": `${(completedDays.length / 7) * 100}%`
               } as React.CSSProperties}
             ></div>
           </div>
-          <span className={styles.progressBar__label}>65%</span>
+          <span className={styles.progressBar__label}>{completedDays.length }/7 days completed</span>
         </div>
       </div>
     </div>

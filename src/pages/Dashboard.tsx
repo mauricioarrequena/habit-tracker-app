@@ -23,6 +23,20 @@ export default function Dashboard() {
     setHabits(habits);
   }
 
+  const toggleHabitDay = (habitId: string, day: string) => {
+    const updatedHabits = habits.map((habit) => {
+      if (habit.id === habitId) {
+        const isCompleted = habit.completedDays.includes(day);
+        const updatedDays = isCompleted ? habit.completedDays.filter((d) => d !== day) : [...habit.completedDays, day];
+        return {...habit, completedDays: updatedDays};
+      }
+        return habit;
+    });
+
+    localStorage.setItem("habits", JSON.stringify(updatedHabits));
+    setHabits(updatedHabits);
+  }
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.dashboard__header}>
@@ -34,7 +48,12 @@ export default function Dashboard() {
       <div className={styles.dashboard__content}>
         {
           habits.map((habit) => {
-            return <HabitCard key={habit.id} title={habit.name} color={habit.color} />
+            return <HabitCard
+              key={habit.id}
+              title={habit.name}
+              color={habit.color}
+              completedDays={habit.completedDays} 
+              onToggleDay={(day) => toggleHabitDay(habit.id, day) }/>
           })
         }
       </div>
