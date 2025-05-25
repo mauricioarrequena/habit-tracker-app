@@ -7,15 +7,18 @@
     "alias-header"
     "alias-controls"
     "alias-content";
-    gap: 3rem;
+  gap: 1rem;
+  background-color: var(--gray-color);
 }
 
 .dashboard__header {
   grid-area: alias-header;
+  padding: 0 1rem;
 }
 
 .dashboard__controls {
   grid-area: alias-controls;
+  padding: 0 1rem;
 }
 
 .dashboard__content {
@@ -26,15 +29,12 @@
   gap: 1rem;
 }
 
-
-
 @media (min-width: 576px) {
-.dashboard {
-  grid-template-rows: 10rem 1fr;
-  grid-template-columns: 20rem 1fr;
-  grid-template-areas:
-    "alias-header     alias-header"
-    "alias-controls   alias-content";
+  .dashboard {
+    grid-template-rows: 10rem 1fr;
+    grid-template-columns: 20rem 1fr;
+    grid-template-areas:
+      "alias-header     alias-header"
+      "alias-controls   alias-content";
+  }
 }
-}
-

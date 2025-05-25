@@ -1,4 +1,5 @@
 import './index.css'
+import "./styles/variables.css";
 import App from './App.tsx'
 import Layout from './components/Layout.tsx'
 import Canvas from './pages/Canvas.tsx'

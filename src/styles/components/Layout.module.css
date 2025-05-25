@@ -1,21 +1,21 @@
 .outergrid {
   height: 100vh;
   display: grid;
-  grid-template-rows: 8rem 1fr;
-  grid-template-columns: 10rem 1fr;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
   grid-template-areas:
-    "alias-header   alias-header"
-    "alias-sidebar  alias-content";
+    "alias-content"
 }
 
 .header {
   grid-area: alias-header;
-  display: flex;
+  display: none;
   justify-content: center;
 }
 
 .sidebar {
   grid-area: alias-sidebar;
+  display: none;
 }
 
 .content {
@@ -25,5 +25,20 @@
   background-color: lightblue;
 }
 
+@media (min-width: 576px) {
+  .outergrid {
+    grid-template-rows: 8rem 1fr;
+    grid-template-columns: 10rem 1fr;
+    grid-template-areas:
+      "alias-header   alias-header"
+      "alias-sidebar  alias-content";
+  }
 
+  .header {
+    display: flex;
+  }
 
+  .sidebar {
+    display: block;
+  }
+}
