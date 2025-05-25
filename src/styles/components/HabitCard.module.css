@@ -20,6 +20,23 @@
   background-color: var(--card-color);
 }
 
+.card__header__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.starIcon {
+  display: none;
+}
+
+.starIconShown {
+  display: block;
+}
+
+
+
 .closeIcon {
   font-size: 1rem;
   border: none;

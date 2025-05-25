@@ -3,4 +3,5 @@
     name: string,
     color: string,
     completedDays: string[];
+    completed: boolean
   };
