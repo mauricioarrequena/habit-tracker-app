@@ -28,13 +28,20 @@ export default function Dashboard() {
       if (habit.id === habitId) {
         const isCompleted = habit.completedDays.includes(day);
         const updatedDays = isCompleted ? habit.completedDays.filter((d) => d !== day) : [...habit.completedDays, day];
-        return {...habit, completedDays: updatedDays};
+        return { ...habit, completedDays: updatedDays };
       }
-        return habit;
+      return habit;
     });
 
-    localStorage.setItem("habits", JSON.stringify(updatedHabits));
-    setHabits(updatedHabits);
+    const checkedCompletedHabit = updatedHabits.map((habit) => {
+      if (habit.completedDays.length === 7) {
+        return { ...habit, completed: true }
+      }
+      return { ...habit, completed: false};
+    });
+
+    localStorage.setItem("habits", JSON.stringify(checkedCompletedHabit));
+    setHabits(checkedCompletedHabit);
   }
 
   return (
@@ -52,8 +59,9 @@ export default function Dashboard() {
               key={habit.id}
               title={habit.name}
               color={habit.color}
-              completedDays={habit.completedDays} 
-              onToggleDay={(day) => toggleHabitDay(habit.id, day) }/>
+              completedDays={habit.completedDays}
+              onToggleDay={(day) => toggleHabitDay(habit.id, day)}
+              completed={habit.completed} />
           })
         }
       </div>

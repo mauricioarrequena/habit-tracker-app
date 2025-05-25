@@ -14,17 +14,25 @@ interface HabitCardProp {
   title: string;
   color: string;
   completedDays: string[];
-  onToggleDay: (day: string) => void
+  onToggleDay: (day: string) => void,
+  completed: boolean,
 }
 
-export default function HabitCard({ title, color, completedDays, onToggleDay }: HabitCardProp) {
+export default function HabitCard({ title, color, completedDays, onToggleDay, completed }: HabitCardProp) {
   return (
     <div className={styles.card}>
       <div className={styles.card__header}
         style={{
           "--card-color": color
         } as React.CSSProperties}>
-        <span className={styles.title}>{title}</span>
+        <div className={styles.card__header__title}>
+          <span className={styles.title}>{title}</span>
+          <span className={`material-symbols-outlined 
+            ${styles.starIcon} 
+            ${completed ? styles.starIconShown : ""}`}>
+            stars
+          </span>
+        </div>
         <button className={styles.closeIcon}>x</button>
       </div>
       <div className={styles.content}>
@@ -63,7 +71,7 @@ export default function HabitCard({ title, color, completedDays, onToggleDay }: 
               } as React.CSSProperties}
             ></div>
           </div>
-          <span className={styles.progressBar__label}>{completedDays.length }/7 days completed</span>
+          <span className={styles.progressBar__label}>{completedDays.length}/7 days completed</span>
         </div>
       </div>
     </div>

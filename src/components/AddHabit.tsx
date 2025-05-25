@@ -33,7 +33,9 @@ export default function AddHabit({ onAddHabit}: AddHabitProps) {
       name: habitName,
       color: selectedColor?.hex,
       completedDays: [],
+      completed: false,
     };
+
     onAddHabit(newHabit);
 
     setHabitName("");
