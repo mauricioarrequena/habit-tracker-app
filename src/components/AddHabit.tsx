@@ -3,10 +3,10 @@ import styles from "../styles/components/AddHabit.module.css";
 import type { Habit } from "../Types/Habit";
 
 interface AddHabitProps {
-  onAddHabit: (newHabit: Habit) => void;  
+  onAddHabit: (newHabit: Habit) => void;
 }
 
-export default function AddHabit({ onAddHabit}: AddHabitProps) {
+export default function AddHabit({ onAddHabit }: AddHabitProps) {
   const [habitName, setHabitName] = useState<string>("");
   const [selectedColorId, setSelectedColorId] = useState<string>("");
 
