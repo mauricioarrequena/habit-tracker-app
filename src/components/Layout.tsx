@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import styles from "../styles/components/Layout.module.css"
+import styles from "../styles/components/Layout.module.css";
 import Sidebar from "./Sidebar";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router";
 
 export default function Layout() {
@@ -11,21 +11,25 @@ export default function Layout() {
       if (window.innerWidth >= 576) {
         setIsSidebarOpen(false);
       }
-    }
+    };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [])
+  }, []);
 
   return (
     <div className={styles.outergrid}>
       <div className={styles.header}>
         <div className={styles.header__title}>
-          <span className={`material-symbols-outlined ${styles.menuIcon}`}
-            onClick={() => setIsSidebarOpen(true)}>menu</span>
+          <span
+            className={`material-symbols-outlined ${styles.menuIcon}`}
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            menu
+          </span>
           <div className={styles.headerText}>
             <span className="">Habit Tracker</span>
             <span className="">Current Page</span>
@@ -34,7 +38,10 @@ export default function Layout() {
       </div>
       {isSidebarOpen && (
         <>
-          <div className={styles.mobileOverlay} onClick={() => setIsSidebarOpen(false)} />
+          <div
+            className={styles.mobileOverlay}
+            onClick={() => setIsSidebarOpen(false)}
+          />
           <div className={`${styles.mobileSidebar} ${styles.show}`}>
             <Sidebar />
           </div>
@@ -44,9 +51,10 @@ export default function Layout() {
         <Sidebar />
       </div>
       <div className={styles.content}>
-        <Outlet />
+        <div className={styles["page-inner"]}>
+          <Outlet />
+        </div>
       </div>
     </div>
   );
-
 }

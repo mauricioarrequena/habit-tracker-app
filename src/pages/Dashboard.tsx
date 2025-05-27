@@ -81,7 +81,7 @@ export default function Dashboard() {
         <ResetHabits onClickReset={handleOnClickResetForResetHabits} />
       </div>
       <div className={styles.dashboard__controls}>
-        <AddHabit mode="add" onAddHabit={handleOnAddHabitForAddHabit} />
+        <AddHabit mode="add" onSubmitAddHabit={handleOnAddHabitForAddHabit} />
       </div>
       <div className={styles.dashboard__content}>
         {habits.map((habit) => {
