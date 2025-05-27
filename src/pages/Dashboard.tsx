@@ -11,12 +11,10 @@ export default function Dashboard() {
   const [selectedHabit, setSelectedHabit] = useState<Habit>(null!); // or whole habit object
   const [habits, setHabits] = useState<Habit[]>([]);
 
-
   const handleEditHabit = () => {
     setSelectedHabit(selectedHabit); 
     setShownModal(true);
   };
-
 
   useEffect(() => {
     const getHabits = () => {

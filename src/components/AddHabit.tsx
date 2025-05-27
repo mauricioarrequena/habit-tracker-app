@@ -17,7 +17,7 @@ export default function AddHabit({
 }: AddHabitProps) {
   const [habitName, setHabitName] = useState<string>("");
   const [selectedColorId, setSelectedColorId] = useState<string>("");
-  const [editableHabit, setEditableHabit] = useState<Habit>(null!); 
+  const [editableHabit, setEditableHabit] = useState<Habit>(null!);
 
   type Color = {
     id: string;
@@ -58,21 +58,30 @@ export default function AddHabit({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const selectedColor = colors.find((color) => color.id === selectedColorId);
-    if (!selectedColor) return;
-
-    const habitData: Habit = {
-      id: editableHabit.id,
-      name: habitName,
-      color: selectedColor.hex,
-      completedDays: editableHabit.completedDays ?? [],
-      completed: editableHabit.completed ?? false,
-    };
+    if (!selectedColor) {
+      return;
+    }
 
     if (mode === "edit") {
-      onUpdateHabit?.(habitData);
-    } else {
-      onAddHabit?.(habitData);
+      const newEditedHabit: Habit = {
+        id: editableHabit.id,
+        name: habitName,
+        color: selectedColor.hex,
+        completedDays: editableHabit.completedDays,
+        completed: editableHabit.completed,
+      };
+      onUpdateHabit!(newEditedHabit);
+      return;
     }
+
+    const newHabit: Habit = {
+      id: crypto.randomUUID(),
+      name: habitName,
+      color: selectedColor.hex,
+      completedDays: [],
+      completed: false,
+    }
+    onAddHabit!(newHabit);
 
     setHabitName("");
     setSelectedColorId("");
@@ -100,10 +109,11 @@ export default function AddHabit({
             {colors.map((color) => (
               <span
                 key={color.id}
-                className={`${styles["color__item"]} ${selectedColorId === color.id
-                  ? styles["color__item--selected"]
-                  : ""
-                  }`}
+                className={`${styles["color__item"]} ${
+                  selectedColorId === color.id
+                    ? styles["color__item--selected"]
+                    : ""
+                }`}
                 style={
                   {
                     "--background-color": color.hex,
