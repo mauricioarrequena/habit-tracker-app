@@ -5,14 +5,14 @@ import type { Habit } from "../Types/Habit";
 interface AddHabitProps {
   mode: "add" | "edit";
   onAddHabit?: (newHabit: Habit) => void;
-  onUpdateHabit?: (updatedHabit: Habit) => void;
+  onSubmitEditHabit: (updatedHabit: Habit) => void;
   habitToEditId?: string;
 }
 
 export default function AddHabit({
   mode,
   onAddHabit,
-  onUpdateHabit,
+  onSubmitEditHabit,
   habitToEditId,
 }: AddHabitProps) {
   const [habitName, setHabitName] = useState<string>("");
@@ -70,7 +70,7 @@ export default function AddHabit({
         completedDays: editableHabit.completedDays,
         completed: editableHabit.completed,
       };
-      onUpdateHabit!(newEditedHabit);
+      onSubmitEditHabit!(newEditedHabit);
       return;
     }
 
