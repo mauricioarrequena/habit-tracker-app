@@ -1,23 +1,22 @@
-import { useState, useEffect } from "react";
 import styles from "../styles/components/AddHabit.module.css";
 import type { Habit } from "../Types/Habit";
+import { useState, useEffect } from "react";
 
 interface AddHabitProps {
-  mode: "add" | "edit";
-  onAddHabit?: (newHabit: Habit) => void;
+  mode: string;
+  onSubmitAddHabit: (newHabit: Habit) => void;
+  habitToEditId: string;
   onSubmitEditHabit: (updatedHabit: Habit) => void;
-  habitToEditId?: string;
 }
-
 export default function AddHabit({
   mode,
-  onAddHabit,
-  onSubmitEditHabit,
+  onSubmitAddHabit,
   habitToEditId,
+  onSubmitEditHabit,
 }: AddHabitProps) {
   const [habitName, setHabitName] = useState<string>("");
   const [selectedColorId, setSelectedColorId] = useState<string>("");
-  const [editableHabit, setEditableHabit] = useState<Habit>(null!);
+  const [habitOnEdition, setHabitOnEdition] = useState<Habit>(null!);
 
   type Color = {
     id: string;
@@ -35,40 +34,33 @@ export default function AddHabit({
 
   useEffect(() => {
     if (mode === "edit") {
-      const habit = getHabitById(habitToEditId!)!;
-      setEditableHabit(habit);
-      setHabitName(habit.name);
-      const foundColor = colors.find((c) => c.hex === habit.color)!;
+      const foudnHabit = getHabitById(habitToEditId!)!;
+      setHabitOnEdition(foudnHabit);
+      setHabitName(foudnHabit.name);
+      const foundColor = colors.find((c) => c.hex === foudnHabit.color)!;
       setSelectedColorId(foundColor.id);
     }
   }, []);
 
   const getHabitById = (id: string) => {
     const storedHabits = localStorage.getItem("habits");
-    if (!storedHabits) return null;
-    try {
-      const habits: Habit[] = JSON.parse(storedHabits);
-      return habits.find((habit) => habit.id === id);
-    } catch (error) {
-      console.error("Error parsing habits from localStorage:", error);
+    if (!storedHabits) {
       return null;
     }
+    const habits: Habit[] = JSON.parse(storedHabits);
+    return habits.find((habit) => habit.id === id);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const selectedColor = colors.find((color) => color.id === selectedColorId);
-    if (!selectedColor) {
-      return;
-    }
-
+    const foundColor = colors.find((color) => color.id === selectedColorId)!;
     if (mode === "edit") {
       const newEditedHabit: Habit = {
-        id: editableHabit.id,
+        id: habitOnEdition.id,
         name: habitName,
-        color: selectedColor.hex,
-        completedDays: editableHabit.completedDays,
-        completed: editableHabit.completed,
+        color: foundColor.hex,
+        completedDays: habitOnEdition.completedDays,
+        completed: habitOnEdition.completed,
       };
       onSubmitEditHabit!(newEditedHabit);
       return;
@@ -77,18 +69,19 @@ export default function AddHabit({
     const newHabit: Habit = {
       id: crypto.randomUUID(),
       name: habitName,
-      color: selectedColor.hex,
+      color: foundColor.hex,
       completedDays: [],
       completed: false,
-    }
-    onAddHabit!(newHabit);
-
+    };
+    onSubmitAddHabit!(newHabit);
     setHabitName("");
     setSelectedColorId("");
   };
 
   return (
-    <div className={styles.card}>
+    <div
+      className={`${styles.card} ${mode === "edit" ? styles.cardEditMode : ""}`}
+    >
       <div className={styles["card__title"]}>
         <span>{mode === "edit" ? "Edit Habit" : "Add New Habit"}</span>
       </div>
@@ -102,7 +95,6 @@ export default function AddHabit({
             onChange={(e) => setHabitName(e.target.value)}
           />
         </div>
-
         <div className={styles["card__color"]}>
           <span className={styles["color__label"]}>Choose a color</span>
           <div className={styles["color__list"]}>
@@ -125,10 +117,9 @@ export default function AddHabit({
             ))}
           </div>
         </div>
-
         <div className={styles["card__action"]}>
           <button className={styles["button"]} type="submit">
-            {mode === "edit" ? "✔ Update Habit" : "+ Add a Habit"}
+            {mode === "edit" ? "Edit Habit" : "Add Habit"}
           </button>
         </div>
       </form>
