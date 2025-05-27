@@ -7,8 +7,8 @@
     "alias-header"
     "alias-controls"
     "alias-content";
-  gap: 1rem;
   background-color: var(--gray-color);
+  gap: 1rem;
 }
 
 .dashboard__header {
@@ -23,18 +23,31 @@
 
 .dashboard__content {
   grid-area: alias-content;
+}
+
+.dashboard__content {
+  grid-area: alias-content;
   display: flex;
   flex-direction: column;
   padding: 0 1rem;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 @media (min-width: 576px) {
   .dashboard {
-    grid-template-rows: 10rem 1fr;
-    grid-template-columns: 20rem 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: auto 1fr;
     grid-template-areas:
       "alias-header     alias-header"
       "alias-controls   alias-content";
   }
+
+  .dashboard__content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-auto-rows: auto; 
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+
 }

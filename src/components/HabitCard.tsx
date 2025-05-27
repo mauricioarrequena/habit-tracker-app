@@ -36,9 +36,6 @@ export default function HabitCard({ title, color, completedDays, onToggleDay, co
         <button className={styles.closeIcon}>x</button>
       </div>
       <div className={styles.content}>
-        <p className={styles.description}>
-          This is a sample description. Material Design emphasizes bold typography and clear hierarchy.
-        </p>
         <div className={styles.checboxList}>
           {
             daysLabels.map((dayLabel, index) => {
