@@ -2,11 +2,21 @@ import styles from "../styles/pages/Dashboard.module.css";
 import AddHabit from "../components/AddHabit";
 import HabitCard from "../components/HabitCard";
 import ResetHabits from "../components/ResetHabits";
+import Modal from "../components/Modal";
 import type { Habit } from "../Types/Habit";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+  const [shownModal, setShownModal] = useState(false);
+  const [selectedHabit, setSelectedHabit] = useState<Habit>(null!); // or whole habit object
   const [habits, setHabits] = useState<Habit[]>([]);
+
+
+  const handleEditHabit = () => {
+    setSelectedHabit(selectedHabit); 
+    setShownModal(true);
+  };
+
 
   useEffect(() => {
     const getHabits = () => {
@@ -44,6 +54,21 @@ export default function Dashboard() {
     setHabits(checkedCompletedHabit);
   }
 
+  const selectHabit = (habitId: string) => {
+    const storedHabits = localStorage.getItem("habits");
+    if (!storedHabits) return null;
+    try {
+      const habits: Habit[] = JSON.parse(storedHabits);
+      const foundHabit = habits.find((habit) => habit.id === habitId)!;
+      setSelectedHabit(foundHabit);
+
+    } catch (error) {
+      console.error("Error parsing habits from localStorage:", error);
+      return null;
+    }
+
+  }
+
   const resetHabitDays = () => {
     const resetHabits = habits.map((habit) => {
       return { ...habit, completedDays: [], completed: false }
@@ -56,10 +81,10 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboard}>
       <div className={styles.dashboard__header}>
-        <ResetHabits onClickReset={resetHabitDays}/>
+        <ResetHabits onClickReset={resetHabitDays} />
       </div>
       <div className={styles.dashboard__controls}>
-        <AddHabit onAddHabit={addHabit} />
+        <AddHabit mode="add" onAddHabit={addHabit} />
       </div>
       <div className={styles.dashboard__content}>
         {
@@ -70,10 +95,21 @@ export default function Dashboard() {
               color={habit.color}
               completedDays={habit.completedDays}
               onToggleDay={(day) => toggleHabitDay(habit.id, day)}
-              completed={habit.completed} />
+              completed={habit.completed}
+              onEdit={() => handleEditHabit()}
+            />
           })
         }
       </div>
+      {shownModal && (
+        <Modal onClose={() => setShownModal(false)}>
+          <AddHabit
+            mode="edit"
+            habitToEditId={habits[0].id}
+            onUpdateHabit={() => { }}
+          />
+        </Modal>
+      )}
     </div>
   )
 }

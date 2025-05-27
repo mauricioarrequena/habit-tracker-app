@@ -16,9 +16,10 @@ interface HabitCardProp {
   completedDays: string[];
   onToggleDay: (day: string) => void,
   completed: boolean,
+  onEdit: () => void,
 }
 
-export default function HabitCard({ title, color, completedDays, onToggleDay, completed }: HabitCardProp) {
+export default function HabitCard({ title, color, completedDays, onToggleDay, completed, onEdit }: HabitCardProp) {
   return (
     <div className={styles.card}>
       <div className={styles.card__header}
@@ -33,6 +34,8 @@ export default function HabitCard({ title, color, completedDays, onToggleDay, co
             stars
           </span>
         </div>
+        <span className={`material-symbols-outlined`}
+          onClick={onEdit}>edit</span>
         <button className={styles.closeIcon}>x</button>
       </div>
       <div className={styles.content}>
