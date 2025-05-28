@@ -23,11 +23,12 @@
 .card__form {
   display: flex;
   flex-direction: column;
-  row-gap: 1.25rem;
+  row-gap: 1rem;
 }
 
 .card__input {
   display: flex;
+  flex-direction: column;
 }
 
 .input__field {
@@ -44,10 +45,20 @@
   border-color: #3f51b5;
 }
 
+.errorMessage {
+  display: none;
+  font-size: 0.85rem;
+  color: #f44336;
+}
+
+.errorMessageShown {
+  display: flex;
+}
+
 .card__color {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  gap: 0.5rem;
 }
 
 .color__label {
