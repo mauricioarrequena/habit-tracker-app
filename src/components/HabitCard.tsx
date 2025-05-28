@@ -12,15 +12,17 @@ const daysLabels: string[] = [
 ];
 
 interface HabitCardProp {
-  habit: Habit
+  habit: Habit;
   onToggleDay: (day: string) => void;
   onEditHabitCard: (habit: Habit) => void;
+  onDeleteHabitCard: (habit: Habit) => void; // NEW
 }
 
 export default function HabitCard({
   habit,
   onToggleDay,
   onEditHabitCard,
+  onDeleteHabitCard
 }: HabitCardProp) {
 
   return (
@@ -50,7 +52,10 @@ export default function HabitCard({
           >
             edit
           </span>
-          <span className={`material-symbols-outlined ${styles.deleteIcon}`}>
+          <span
+            className={`material-symbols-outlined ${styles.deleteIcon}`}
+            onClick={() => onDeleteHabitCard(habit)} // Call the handler
+          >
             close
           </span>
         </div>

@@ -1,4 +1,3 @@
-// components/Modal.tsx
 import styles from "../styles/components/Modal.module.css";
 
 interface ModalProps {
