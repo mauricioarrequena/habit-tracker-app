@@ -114,11 +114,11 @@ export default function Dashboard() {
             <HabitCard
               key={habit.id}
               habit={habit}
-              onToggleDay={(day) =>
+              onToggle={(day) =>
                 handleOnToggleDayForHabitCard(habit.id, day)
               }
-              onEditHabitCard={handleEditHabitCardForHabitCard}
-              onDeleteHabitCard={handleDeleteHabit}
+              onEdit={handleEditHabitCardForHabitCard}
+              onDelete={handleDeleteHabit}
               />
           );
         })}
