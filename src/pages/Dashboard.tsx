@@ -85,16 +85,20 @@ export default function Dashboard() {
     setModalContent(null);
   };
 
+  const handleOnClickConfirm = (habit: Habit) => {
+    const filteredHabits = habits.filter((h) => h.id !== habit.id);
+    habitService.saveHabits(filteredHabits)
+    const allHabits = habitService.getHabits();
+    setHabits(allHabits);
+    setModalContent(null);
+  };
+
   const handleOnClickDelete = (habitToDelete: Habit) => {
     showModalWithContent(
       <DeleteHabit
+        habit={habitToDelete}
         onClickCancel={handleOnClickCancel}
-        onClickConfirm={() => {
-          const updatedHabits = habits.filter((h) => h.id !== habitToDelete.id);
-          localStorage.setItem("habits", JSON.stringify(updatedHabits));
-          setHabits(updatedHabits);
-          setModalContent(null);
-        }}
+        onClickConfirm={handleOnClickConfirm}
       />
     );
   };
