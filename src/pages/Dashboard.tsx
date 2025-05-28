@@ -40,7 +40,7 @@ export default function Dashboard() {
       <AddHabit
         mode="edit"
         habitToEditId={foundHabit.id}
-        onSubmitEditHabit={handleOnSubmitEditForAddHabit}
+        onSubmitEdit={handleOnSubmitEditForAddHabit}
       />
     );
   };
@@ -106,7 +106,7 @@ export default function Dashboard() {
         <ResetHabits onClickReset={handleOnClickResetForResetHabits} />
       </div>
       <div className={styles.dashboard__controls}>
-        <AddHabit mode="add" onSubmitAddHabit={handleOnAddHabitForAddHabit} />
+        <AddHabit mode="add" onSubmitSave={handleOnAddHabitForAddHabit} />
       </div>
       <div className={styles.dashboard__content}>
         {habits.map((habit) => {

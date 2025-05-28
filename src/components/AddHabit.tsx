@@ -1,18 +1,18 @@
 import styles from "../styles/components/AddHabit.module.css";
 import type { Habit } from "../Types/Habit";
+import colors from "../data/Colors";
 import { useState, useEffect, useRef } from "react";
-
 interface AddHabitProps {
   mode: string;
-  onSubmitAddHabit: (newHabit: Habit) => void;
+  onSubmitSave: (newHabit: Habit) => void;
   habitToEditId: string;
-  onSubmitEditHabit: (updatedHabit: Habit) => void;
+  onSubmitEdit: (newEditedHabit: Habit) => void;
 }
 export default function AddHabit({
   mode,
-  onSubmitAddHabit,
+  onSubmitSave,
   habitToEditId,
-  onSubmitEditHabit,
+  onSubmitEdit,
 }: AddHabitProps) {
   const [habitName, setHabitName] = useState<string>("");
   const [selectedColorId, setSelectedColorId] = useState<string>("");
@@ -21,21 +21,6 @@ export default function AddHabit({
     name: useRef<HTMLInputElement>(null),
     color: useRef<HTMLInputElement>(null),
   };
-
-
-  type Color = {
-    id: string;
-    name: string;
-    hex: string;
-  };
-
-  const colors: Color[] = [
-    { id: "1", name: "Red", hex: "#f44336" },
-    { id: "2", name: "Purple", hex: "#9c27b0" },
-    { id: "3", name: "Blue", hex: "#2196f3" },
-    { id: "4", name: "Green", hex: "#4caf50" },
-    { id: "5", name: "Orange", hex: "#ff9800" },
-  ];
 
   useEffect(() => {
     if (mode === "edit") {
@@ -62,17 +47,17 @@ export default function AddHabit({
 
     const nameErrorMessage = refs.name.current!.nextElementSibling;
     if (!habitName) {
-      nameErrorMessage?.classList.add(`${styles.errorMessageShown}`)
+      nameErrorMessage?.classList.add(`${styles.errorMessageShown}`);
       return;
     }
-    nameErrorMessage?.classList.remove(`${styles.errorMessageShown}`)
+    nameErrorMessage?.classList.remove(`${styles.errorMessageShown}`);
 
     const colorErrorMessage = refs.color.current!.nextElementSibling;
     if (!selectedColorId) {
-      colorErrorMessage?.classList.add(`${styles.errorMessageShown}`)
+      colorErrorMessage?.classList.add(`${styles.errorMessageShown}`);
       return;
     }
-    colorErrorMessage?.classList.remove(`${styles.errorMessageShown}`)
+    colorErrorMessage?.classList.remove(`${styles.errorMessageShown}`);
 
     if (mode === "edit") {
       const newEditedHabit: Habit = {
@@ -82,7 +67,7 @@ export default function AddHabit({
         completedDays: habitOnEdition.completedDays,
         completed: habitOnEdition.completed,
       };
-      onSubmitEditHabit!(newEditedHabit);
+      onSubmitEdit!(newEditedHabit);
       return;
     }
 
@@ -93,7 +78,7 @@ export default function AddHabit({
       completedDays: [],
       completed: false,
     };
-    onSubmitAddHabit!(newHabit);
+    onSubmitSave!(newHabit);
     setHabitName("");
     setSelectedColorId("");
   };
@@ -107,27 +92,27 @@ export default function AddHabit({
       </div>
       <form className={styles["card__form"]} onSubmit={handleSubmit}>
         <div className={styles["card__input"]}>
-          <input className={styles["input__field"]}
+          <input
+            className={styles["input__field"]}
             type="text"
             placeholder="Enter habit name"
             ref={refs.name}
             value={habitName}
             onChange={(e) => setHabitName(e.target.value)}
           />
-          <span className={styles.errorMessage}>Enter a name  </span>
+          <span className={styles.errorMessage}>Enter a name </span>
         </div>
         <div className={styles["card__color"]}>
           <span className={styles["color__label"]}>Choose a color</span>
-          <div className={styles["color__list"]}
-            ref={refs.color}
-          >
+          <div className={styles["color__list"]} ref={refs.color}>
             {colors.map((color) => (
               <span
                 key={color.id}
-                className={`${styles["color__item"]} ${selectedColorId === color.id
-                  ? styles["color__item--selected"]
-                  : ""
-                  }`}
+                className={`${styles["color__item"]} ${
+                  selectedColorId === color.id
+                    ? styles["color__item--selected"]
+                    : ""
+                }`}
                 style={
                   {
                     "--background-color": color.hex,

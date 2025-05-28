@@ -1,7 +1,6 @@
 import styles from "../styles/components/HabitCard.module.css";
 import type { Habit } from "../Types/Habit";
 import dayNames from "../data/days";
-
 interface HabitCardProp {
   habit: Habit;
   onToggle: (day: string) => void;
@@ -12,9 +11,8 @@ export default function HabitCard({
   habit,
   onToggle,
   onEdit,
-  onDelete
+  onDelete,
 }: HabitCardProp) {
-
   return (
     <div className={styles["card"]}>
       <div
