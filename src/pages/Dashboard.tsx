@@ -5,9 +5,10 @@ import ResetHabits from "../components/ResetHabits";
 import Modal from "../components/Modal";
 import type { Habit } from "../Types/Habit";
 import { useEffect, useState } from "react";
+import DeleteHabit from "../components/DeleteHabit";
 
 export default function Dashboard() {
-  const [shownModal, setShownModal] = useState(false);
+  const [modalContent, setModalContent] = useState<React.ReactNode>(null);
   const [selectedHabit, setSelectedHabit] = useState<Habit>(null!);
   const [habits, setHabits] = useState<Habit[]>([]);
 
@@ -19,19 +20,29 @@ export default function Dashboard() {
     getHabits();
   }, []);
 
+  const showModalWithContent = (content: React.ReactNode) => {
+    setModalContent(content);
+  };
+
   const handleOnSubmitEditForAddHabit = (habitToSubmit: Habit) => {
     const updatedHabits = habits.map((habit) =>
       habit.id === habitToSubmit.id ? habitToSubmit : habit
     );
     localStorage.setItem("habits", JSON.stringify(updatedHabits));
     setHabits(updatedHabits);
-    setShownModal(false);
+    setModalContent(null)
   };
 
   const handleEditHabitCardForHabitCard = (selectedHabit: Habit) => {
     const foundHabit = habits.find((habit) => habit.id === selectedHabit.id)!;
     setSelectedHabit(foundHabit);
-    setShownModal(true);
+    showModalWithContent(
+      <AddHabit
+        mode="edit"
+        habitToEditId={foundHabit.id}
+        onSubmitEditHabit={handleOnSubmitEditForAddHabit}
+      />
+    );
   };
 
   const handleOnAddHabitForAddHabit = (newHabit: Habit) => {
@@ -75,6 +86,20 @@ export default function Dashboard() {
     setHabits(resetHabits);
   };
 
+  const handleDeleteHabit = (habitToDelete: Habit) => {
+    showModalWithContent(
+      <DeleteHabit
+        onCancel={() => setModalContent(null)}
+        onConfirm={() => {
+          const updatedHabits = habits.filter(h => h.id !== habitToDelete.id);
+          localStorage.setItem("habits", JSON.stringify(updatedHabits));
+          setHabits(updatedHabits);
+          setModalContent(null);
+        }}
+      />
+    );
+  };
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.dashboard__header}>
@@ -93,17 +118,14 @@ export default function Dashboard() {
                 handleOnToggleDayForHabitCard(habit.id, day)
               }
               onEditHabitCard={handleEditHabitCardForHabitCard}
-            />
+              onDeleteHabitCard={handleDeleteHabit}
+              />
           );
         })}
       </div>
-      {shownModal && (
-        <Modal onClose={() => setShownModal(false)}>
-          <AddHabit
-            mode="edit"
-            habitToEditId={selectedHabit.id}
-            onSubmitEditHabit={handleOnSubmitEditForAddHabit}
-          />
+      {modalContent && (
+        <Modal onClose={() => setModalContent(null)}>
+          {modalContent}
         </Modal>
       )}
     </div>
