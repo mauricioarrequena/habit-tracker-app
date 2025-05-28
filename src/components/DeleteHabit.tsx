@@ -1,10 +1,13 @@
 import styles from "../styles/components/DeleteHabit.module.css";
+import type { Habit } from "../Types/Habit";
 
 interface DeleteHabitProps {
+  habit: Habit
   onClickCancel: () => void;
-  onClickConfirm: () => void;
+  onClickConfirm: (habit: Habit) => void;
 }
 export default function DeleteHabit({
+  habit,
   onClickCancel,
   onClickConfirm,
 }: DeleteHabitProps) {
@@ -16,7 +19,7 @@ export default function DeleteHabit({
           <button className={styles.btnCancel} onClick={onClickCancel}>
             Cancel
           </button>
-          <button className={styles.btnConfirm} onClick={onClickConfirm}>
+          <button className={styles.btnConfirm} onClick={() => onClickConfirm(habit)}>
             Confirm
           </button>
         </div>
