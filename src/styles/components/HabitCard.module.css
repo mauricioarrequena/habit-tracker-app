@@ -7,8 +7,7 @@
   flex-direction: column;
   overflow: hidden;
   border-radius: 8px;
-  /* background: white; */
-  border: 3px solid red;
+  background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -17,16 +16,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background-color: var(--card-color); */
-  border: 3px solid blue;
+  background-color: var(--card-color);
 }
 
 .card__header__title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.4rem;
-  border: 3px solid green;
+  gap: 0.5rem;
+}
+
+.title {
+  font-size: 1.08rem;
+  color: #000000de;
 }
 
 .starIcon {
@@ -41,21 +43,33 @@
 
 .header__controls {
   display: flex;
-  gap: 1rem;
-  border: 3px solid darkcyan;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .editIcon {
-  border: 3px solid brown;
+  padding: 0.4rem;
+  border-radius: 50%;
 }
 
 .editIcon:hover {
   cursor: pointer;
-  filter: brightness(50%);
+  background-color: rgba(0, 0, 0, 0.08); 
 }
 
 .deleteIcon {
-  border: 3px solid magenta;
+  padding: 0.4rem;
+  border-radius: 50%;
+  visibility: hidden;
+}
+
+.card:hover .deleteIcon {
+  visibility: visible;
+}
+
+.deleteIcon:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.08); 
 }
 
 .content {
@@ -121,16 +135,16 @@
   color: #333;
 }
 
-.progressBar {
+.progressSection {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
-  font-family: "Roboto", sans-serif;
+  gap: 1rem;
 }
 
-.progressBar__track {
-  flex-basis: 48%;
+.progressBar {
   height: 10px;
+  flex: 1;
   border-radius: 5px;
   overflow: hidden;
   background-color: #e0e0e0;
@@ -139,14 +153,12 @@
 .progressBar__fill {
   height: 100%;
   width: var(--progress);
+  border-radius: 5px 0 0 5px;
   background-color: var(--card-color);
   transition: width 0.4s ease-in-out;
-  border-radius: 5px 0 0 5px;
 }
 
 .progressBar__label {
-  flex-basis: 52%;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: #333;
-  text-align: right;
 }
