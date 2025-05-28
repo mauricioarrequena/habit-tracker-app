@@ -1,5 +1,5 @@
 
 
 export default function Settings() {
-  return <span>deah settings</span>
+  return <span>settings page</span>
 }

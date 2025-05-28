@@ -8,7 +8,7 @@ import type { Habit } from "../Types/Habit";
 import { ModeEnum } from "../enums/Mode.enum";
 import { useEffect, useState } from "react";
 
-import { habitService } from "../services/habitService";
+import { habitService } from "../services/HabitService";
 
 export default function Dashboard() {
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
