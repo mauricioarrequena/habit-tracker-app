@@ -81,11 +81,15 @@ export default function Dashboard() {
     );
   };
 
+  const handleOnClickCancel = () => {
+    setModalContent(null);
+  };
+
   const handleOnClickDelete = (habitToDelete: Habit) => {
     showModalWithContent(
       <DeleteHabit
-        onCancel={() => setModalContent(null)}
-        onConfirm={() => {
+        onClickCancel={handleOnClickCancel}
+        onClickConfirm={() => {
           const updatedHabits = habits.filter((h) => h.id !== habitToDelete.id);
           localStorage.setItem("habits", JSON.stringify(updatedHabits));
           setHabits(updatedHabits);
