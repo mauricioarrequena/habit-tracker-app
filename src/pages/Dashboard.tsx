@@ -3,91 +3,85 @@ import AddHabit from "../components/AddHabit";
 import HabitCard from "../components/HabitCard";
 import ResetHabits from "../components/ResetHabits";
 import Modal from "../components/Modal";
-import type { Habit } from "../Types/Habit";
-import { useEffect, useState } from "react";
 import DeleteHabit from "../components/DeleteHabit";
+import type { Habit } from "../Types/Habit";
 import { ModeEnum } from "../enums/Mode.enum";
+import { useEffect, useState } from "react";
+
+import { habitService } from "../services/habitService";
 
 export default function Dashboard() {
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
-  const [selectedHabit, setSelectedHabit] = useState<Habit>(null!);
   const [habits, setHabits] = useState<Habit[]>([]);
 
   useEffect(() => {
-    const getHabits = () => {
-      setHabits(JSON.parse(localStorage.getItem("habits") || "[]"));
-    };
-
-    getHabits();
+    const habits = habitService.getHabits();
+    setHabits(habits);
   }, []);
 
-  const showModalWithContent = (content: React.ReactNode) => {
-    setModalContent(content);
+  const handleOnClickReset = () => {
+    const habitsReseted = habits.map((habit) => {
+      return { ...habit, completedDays: [], completed: false };
+    });
+
+    habitService.saveHabits(habitsReseted);
+    const allHabits = habitService.getHabits();
+    setHabits(allHabits);
   };
 
-  const handleOnSubmitEditForAddHabit = (habitToSubmit: Habit) => {
-    const updatedHabits = habits.map((habit) =>
-      habit.id === habitToSubmit.id ? habitToSubmit : habit
-    );
-    localStorage.setItem("habits", JSON.stringify(updatedHabits));
-    setHabits(updatedHabits);
+  const handleOnSubmitSave = (newHabit: Habit) => {
+    const habits = habitService.getHabits();
+    habits.push(newHabit);
+    habitService.saveHabits(habits);
+    const allHabits = habitService.getHabits();
+    setHabits(allHabits);
+  };
+
+  const handleOnChangeDayToggle = (dayName: string, habit: Habit) => {
+    const calculatedStateHabit: Habit = getHabitWithToggledDay(dayName, habit);
+    habitService.updateHabit(calculatedStateHabit);
+    const allHabits = habitService.getHabits();
+    setHabits(allHabits);
+  };
+
+  const getHabitWithToggledDay = (dayName: string, habit: Habit): Habit => {
+    const isDayCompleted = habit.completedDays.includes(dayName);
+
+    let dayNames: string[];
+    if (isDayCompleted) {
+      dayNames = habit.completedDays.filter((d) => d !== dayName);
+    } else {
+      dayNames = [...habit.completedDays, dayName];
+    }
+    const completed: boolean = dayNames.length === 7 ? true : false;
+    const updatedHabit: Habit = {
+      ...habit,
+      completedDays: dayNames,
+      completed: completed,
+    };
+    return updatedHabit;
+  };
+
+  const handleOnSubmitEdit = (habitChanges: Habit) => {
+    habitService.updateHabit(habitChanges);
+    const habits = habitService.getHabits();
+    setHabits(habits);
     setModalContent(null);
   };
 
-  const handleEditHabitCardForHabitCard = (selectedHabit: Habit) => {
-    const foundHabit = habits.find((habit) => habit.id === selectedHabit.id)!;
-    setSelectedHabit(foundHabit);
+  const handleOnClickEdit = (habit: Habit) => {
+    const foundHabit = habits.find((h) => h.id === habit.id)!;
     showModalWithContent(
       <AddHabit
         mode={ModeEnum.EDIT}
         habitId={foundHabit.id}
-        onSubmitEdit={handleOnSubmitEditForAddHabit}
+        onSubmitSave={null}
+        onSubmitEdit={handleOnSubmitEdit}
       />
     );
   };
 
-  const handleOnAddHabitForAddHabit = (newHabit: Habit) => {
-    const savedHabits: Habit[] = JSON.parse(
-      localStorage.getItem("habits") || "[]"
-    );
-    savedHabits.push(newHabit);
-    localStorage.setItem("habits", JSON.stringify(savedHabits));
-    setHabits(savedHabits);
-  };
-
-  const handleOnToggleDayForHabitCard = (habitId: string, day: string) => {
-    const updatedHabits = habits.map((habit) => {
-      if (habit.id === habitId) {
-        const isCompleted = habit.completedDays.includes(day);
-        const updatedDays = isCompleted
-          ? habit.completedDays.filter((d) => d !== day)
-          : [...habit.completedDays, day];
-        return { ...habit, completedDays: updatedDays };
-      }
-      return habit;
-    });
-
-    const checkedCompletedHabit = updatedHabits.map((habit) => {
-      if (habit.completedDays.length === 7) {
-        return { ...habit, completed: true };
-      }
-      return { ...habit, completed: false };
-    });
-
-    localStorage.setItem("habits", JSON.stringify(checkedCompletedHabit));
-    setHabits(checkedCompletedHabit);
-  };
-
-  const handleOnClickResetForResetHabits = () => {
-    const resetHabits = habits.map((habit) => {
-      return { ...habit, completedDays: [], completed: false };
-    });
-
-    localStorage.setItem("habits", JSON.stringify(resetHabits));
-    setHabits(resetHabits);
-  };
-
-  const handleDeleteHabit = (habitToDelete: Habit) => {
+  const handleOnClickDelete = (habitToDelete: Habit) => {
     showModalWithContent(
       <DeleteHabit
         onCancel={() => setModalContent(null)}
@@ -101,13 +95,22 @@ export default function Dashboard() {
     );
   };
 
+  const showModalWithContent = (content: React.ReactNode) => {
+    setModalContent(content);
+  };
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.dashboard__header}>
-        <ResetHabits onClickReset={handleOnClickResetForResetHabits} />
+        <ResetHabits onClickReset={handleOnClickReset} />
       </div>
       <div className={styles.dashboard__controls}>
-        <AddHabit mode="add" onSubmitSave={handleOnAddHabitForAddHabit} />
+        <AddHabit
+          mode={ModeEnum.CREATE}
+          habitId={null}
+          onSubmitSave={handleOnSubmitSave}
+          onSubmitEdit={null}
+        />
       </div>
       <div className={styles.dashboard__content}>
         {habits.map((habit) => {
@@ -115,9 +118,9 @@ export default function Dashboard() {
             <HabitCard
               key={habit.id}
               habit={habit}
-              onToggle={(day) => handleOnToggleDayForHabitCard(habit.id, day)}
-              onEdit={handleEditHabitCardForHabitCard}
-              onDelete={handleDeleteHabit}
+              onChangeDayToggle={handleOnChangeDayToggle}
+              onClickEdit={handleOnClickEdit}
+              onClickDelete={handleOnClickDelete}
             />
           );
         })}

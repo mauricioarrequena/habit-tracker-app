@@ -8,9 +8,9 @@ import { ModeEnum } from "../enums/Mode.enum";
 
 interface AddHabitProps {
   mode: ModeEnum;
-  habitId: string;
-  onSubmitSave: (newHabit: Habit) => void;
-  onSubmitEdit: (newEditedHabit: Habit) => void;
+  habitId: string | null;
+  onSubmitSave: ((newHabit: Habit) => void) | null;
+  onSubmitEdit: ((newEditedHabit: Habit) => void) | null;
 }
 export default function AddHabit({
   mode,
@@ -71,7 +71,7 @@ export default function AddHabit({
       completedDays: [],
       completed: false,
     };
-    onSubmitSave(newHabit);
+    onSubmitSave!(newHabit);
     setHabitName("");
     setHabitColor(null);
   };

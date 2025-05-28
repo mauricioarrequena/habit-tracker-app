@@ -4,15 +4,15 @@ import dayNames from "../data/Days";
 
 interface HabitCardProp {
   habit: Habit;
-  onToggle: (day: string) => void;
-  onEdit: (habit: Habit) => void;
-  onDelete: (habit: Habit) => void;
+  onChangeDayToggle: (day: string, habit: Habit) => void;
+  onClickEdit: (habit: Habit) => void;
+  onClickDelete: (habit: Habit) => void;
 }
 export default function HabitCard({
   habit,
-  onToggle,
-  onEdit,
-  onDelete,
+  onChangeDayToggle,
+  onClickEdit,
+  onClickDelete,
 }: HabitCardProp) {
   return (
     <div className={styles["card"]}>
@@ -37,13 +37,13 @@ export default function HabitCard({
         <div className={styles["header__controls"]}>
           <span
             className={`material-symbols-outlined ${styles["editIcon"]}`}
-            onClick={() => onEdit(habit)}
+            onClick={() => onClickEdit(habit)}
           >
             edit
           </span>
           <span
             className={`material-symbols-outlined ${styles["deleteIcon"]}`}
-            onClick={() => onDelete(habit)}
+            onClick={() => onClickDelete(habit)}
           >
             close
           </span>
@@ -59,7 +59,7 @@ export default function HabitCard({
                   type="checkbox"
                   checked={habit.completedDays.includes(dayName)}
                   className={styles["checkboxInput"]}
-                  onChange={() => onToggle(dayName)}
+                  onChange={() => onChangeDayToggle(dayName, habit)}
                 />
                 <span
                   className={styles["checkboxCustom"]}
