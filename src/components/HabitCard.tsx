@@ -1,79 +1,69 @@
 import styles from "../styles/components/HabitCard.module.css";
 import type { Habit } from "../Types/Habit";
-
-const daysLabels: string[] = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Sataturday",
-  "Sunday",
-];
+import dayNames from "../data/days";
 
 interface HabitCardProp {
   habit: Habit;
-  onToggleDay: (day: string) => void;
-  onEditHabitCard: (habit: Habit) => void;
-  onDeleteHabitCard: (habit: Habit) => void; // NEW
+  onToggle: (day: string) => void;
+  onEdit: (habit: Habit) => void;
+  onDelete: (habit: Habit) => void;
 }
-
 export default function HabitCard({
   habit,
-  onToggleDay,
-  onEditHabitCard,
-  onDeleteHabitCard
+  onToggle,
+  onEdit,
+  onDelete
 }: HabitCardProp) {
 
   return (
-    <div className={styles.card}>
+    <div className={styles["card"]}>
       <div
-        className={styles.card__header}
+        className={styles["card__header"]}
         style={
           {
             "--card-color": habit.color,
           } as React.CSSProperties
         }
       >
-        <div className={styles.card__header__title}>
-          <span className={styles.title}>{habit.name}</span>
+        <div className={styles["card__header__title"]}>
+          <span className={styles["title"]}>{habit.name}</span>
           <span
             className={`material-symbols-outlined 
-            ${styles.starIcon} 
-            ${habit.completed ? styles.starIconShown : ""}`}
+            ${styles["starIcon"]} 
+            ${habit.completed ? styles["starIconShown"] : ""}`}
           >
             stars
           </span>
         </div>
-        <div className={styles.header__controls}>
+        <div className={styles["header__controls"]}>
           <span
-            className={`material-symbols-outlined ${styles.editIcon}`}
-            onClick={() => onEditHabitCard(habit)}
+            className={`material-symbols-outlined ${styles["editIcon"]}`}
+            onClick={() => onEdit(habit)}
           >
             edit
           </span>
           <span
-            className={`material-symbols-outlined ${styles.deleteIcon}`}
-            onClick={() => onDeleteHabitCard(habit)} // Call the handler
+            className={`material-symbols-outlined ${styles["deleteIcon"]}`}
+            onClick={() => onDelete(habit)}
           >
             close
           </span>
         </div>
       </div>
-      <div className={styles.content}>
-        <div className={styles.checboxList}>
-          {daysLabels.map((dayLabel, index) => {
+      <div className={styles["content"]}>
+        <div className={styles["checboxList"]}>
+          {dayNames.map((dayName, index) => {
             return (
-              <label key={index} className={styles.checkbox}>
-                <span className={styles.checkboxLabel}>{dayLabel[0]}</span>
+              <label key={index} className={styles["checkbox"]}>
+                <span className={styles["checkboxLabel"]}>{dayName[0]}</span>
                 <input
                   type="checkbox"
-                  checked={habit.completedDays.includes(dayLabel)}
-                  className={styles.checkboxInput}
-                  onChange={() => onToggleDay(dayLabel)}
+                  checked={habit.completedDays.includes(dayName)}
+                  className={styles["checkboxInput"]}
+                  onChange={() => onToggle(dayName)}
                 />
                 <span
-                  className={styles.checkboxCustom}
+                  className={styles["checkboxCustom"]}
                   style={
                     {
                       "--card-color": habit.color,
@@ -84,11 +74,10 @@ export default function HabitCard({
             );
           })}
         </div>
-
-        <div className={styles.progressSection}>
-          <div className={styles.progressBar}>
+        <div className={styles["progressSection"]}>
+          <div className={styles["progressBar"]}>
             <div
-              className={styles.progressBar__fill}
+              className={styles["progressBar__fill"]}
               style={
                 {
                   "--card-color": habit.color,
@@ -97,11 +86,10 @@ export default function HabitCard({
               }
             ></div>
           </div>
-          <span className={styles.progressBar__label}>
+          <span className={styles["progressBar__label"]}>
             {habit.completedDays.length}/7 days completed
           </span>
         </div>
-
       </div>
     </div>
   );
