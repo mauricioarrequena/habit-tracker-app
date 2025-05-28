@@ -1,140 +1,118 @@
 import styles from "../styles/components/AddHabit.module.css";
 import type { Habit } from "../Types/Habit";
+import colors from "../data/Colors";
+import { habitService } from "../services/habitService";
 import { useState, useEffect, useRef } from "react";
+import type { Color } from "../Types/Color";
+import { ModeEnum } from "../enums/Mode.enum";
 
 interface AddHabitProps {
-  mode: string;
-  onSubmitAddHabit: (newHabit: Habit) => void;
-  habitToEditId: string;
-  onSubmitEditHabit: (updatedHabit: Habit) => void;
+  mode: ModeEnum;
+  habitId: string | null;
+  onSubmitSave: ((newHabit: Habit) => void) | null;
+  onSubmitEdit: ((newEditedHabit: Habit) => void) | null;
 }
 export default function AddHabit({
   mode,
-  onSubmitAddHabit,
-  habitToEditId,
-  onSubmitEditHabit,
+  habitId,
+  onSubmitSave,
+  onSubmitEdit,
 }: AddHabitProps) {
   const [habitName, setHabitName] = useState<string>("");
-  const [selectedColorId, setSelectedColorId] = useState<string>("");
-  const [habitOnEdition, setHabitOnEdition] = useState<Habit>(null!);
+  const [habitColor, setHabitColor] = useState<Color | null>(null);
+  const [habitOnEdition, setHabitOnEdition] = useState<Habit | null>(null);
   const refs = {
     name: useRef<HTMLInputElement>(null),
     color: useRef<HTMLInputElement>(null),
   };
 
-
-  type Color = {
-    id: string;
-    name: string;
-    hex: string;
-  };
-
-  const colors: Color[] = [
-    { id: "1", name: "Red", hex: "#f44336" },
-    { id: "2", name: "Purple", hex: "#9c27b0" },
-    { id: "3", name: "Blue", hex: "#2196f3" },
-    { id: "4", name: "Green", hex: "#4caf50" },
-    { id: "5", name: "Orange", hex: "#ff9800" },
-  ];
-
   useEffect(() => {
-    if (mode === "edit") {
-      const foudnHabit = getHabitById(habitToEditId!)!;
-      setHabitOnEdition(foudnHabit);
-      setHabitName(foudnHabit.name);
-      const foundColor = colors.find((c) => c.hex === foudnHabit.color)!;
-      setSelectedColorId(foundColor.id);
+    if (mode === ModeEnum.EDIT) {
+      const habit = habitService.getHabit(habitId!)!;
+      setHabitOnEdition(habit);
+      setHabitName(habit.name);
+      const color = colors.find((c) => c.hex === habit.hexColor)!;
+      setHabitColor(color);
     }
   }, []);
 
-  const getHabitById = (id: string) => {
-    const storedHabits = localStorage.getItem("habits");
-    if (!storedHabits) {
-      return null;
-    }
-    const habits: Habit[] = JSON.parse(storedHabits);
-    return habits.find((habit) => habit.id === id);
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const foundColor = colors.find((color) => color.id === selectedColorId)!;
 
     const nameErrorMessage = refs.name.current!.nextElementSibling;
     if (!habitName) {
-      nameErrorMessage?.classList.add(`${styles.errorMessageShown}`)
+      nameErrorMessage?.classList.add(`${styles.errorMessageShown}`);
       return;
     }
-    nameErrorMessage?.classList.remove(`${styles.errorMessageShown}`)
-
+    nameErrorMessage?.classList.remove(`${styles.errorMessageShown}`);
     const colorErrorMessage = refs.color.current!.nextElementSibling;
-    if (!selectedColorId) {
-      colorErrorMessage?.classList.add(`${styles.errorMessageShown}`)
+    if (!habitColor) {
+      colorErrorMessage?.classList.add(`${styles.errorMessageShown}`);
       return;
     }
-    colorErrorMessage?.classList.remove(`${styles.errorMessageShown}`)
+    colorErrorMessage?.classList.remove(`${styles.errorMessageShown}`);
 
-    if (mode === "edit") {
-      const newEditedHabit: Habit = {
-        id: habitOnEdition.id,
+    if (mode === ModeEnum.EDIT) {
+      const updatedHabit: Habit = {
+        id: habitOnEdition!.id,
         name: habitName,
-        color: foundColor.hex,
-        completedDays: habitOnEdition.completedDays,
-        completed: habitOnEdition.completed,
+        hexColor: habitColor.hex,
+        completedDays: habitOnEdition!.completedDays,
+        completed: habitOnEdition!.completed,
       };
-      onSubmitEditHabit!(newEditedHabit);
+      onSubmitEdit!(updatedHabit);
       return;
     }
 
     const newHabit: Habit = {
       id: crypto.randomUUID(),
-      name: habitName,
-      color: foundColor.hex,
+      name: habitName.trim(),
+      hexColor: habitColor.hex,
       completedDays: [],
       completed: false,
     };
-    onSubmitAddHabit!(newHabit);
+    onSubmitSave!(newHabit);
     setHabitName("");
-    setSelectedColorId("");
+    setHabitColor(null);
   };
 
   return (
     <div
-      className={`${styles.card} ${mode === "edit" ? styles.cardEditMode : ""}`}
+      className={`${styles.card} ${
+        mode === ModeEnum.EDIT ? styles.cardEditMode : ""
+      }`}
     >
       <div className={styles["card__title"]}>
-        <span>{mode === "edit" ? "Edit Habit" : "Add New Habit"}</span>
+        <span>{mode === ModeEnum.EDIT ? "Edit Habit" : "Add New Habit"}</span>
       </div>
       <form className={styles["card__form"]} onSubmit={handleSubmit}>
         <div className={styles["card__input"]}>
-          <input className={styles["input__field"]}
+          <input
+            className={styles["input__field"]}
             type="text"
             placeholder="Enter habit name"
             ref={refs.name}
             value={habitName}
             onChange={(e) => setHabitName(e.target.value)}
           />
-          <span className={styles.errorMessage}>Enter a name  </span>
+          <span className={styles.errorMessage}>Enter a name </span>
         </div>
         <div className={styles["card__color"]}>
           <span className={styles["color__label"]}>Choose a color</span>
-          <div className={styles["color__list"]}
-            ref={refs.color}
-          >
+          <div className={styles["color__list"]} ref={refs.color}>
             {colors.map((color) => (
               <span
                 key={color.id}
-                className={`${styles["color__item"]} ${selectedColorId === color.id
-                  ? styles["color__item--selected"]
-                  : ""
-                  }`}
+                className={`${styles["color__item"]} ${
+                  habitColor === color ? styles["color__item--selected"] : ""
+                }`}
                 style={
                   {
                     "--background-color": color.hex,
                     "--selected-color": color.hex,
                   } as React.CSSProperties
                 }
-                onClick={() => setSelectedColorId(color.id)}
+                onClick={() => setHabitColor(color)}
               />
             ))}
           </div>
@@ -142,7 +120,7 @@ export default function AddHabit({
         </div>
         <div className={styles["card__action"]}>
           <button className={styles["button"]} type="submit">
-            {mode === "edit" ? "Edit Habit" : "Add Habit"}
+            {mode === ModeEnum.EDIT ? "Edit Habit" : "Add Habit"}
           </button>
         </div>
       </form>

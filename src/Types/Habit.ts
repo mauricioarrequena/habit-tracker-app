@@ -1,7 +1,7 @@
   export type Habit = {
     id: string,
     name: string,
-    color: string,
+    hexColor: string,
     completedDays: string[];
     completed: boolean
   };

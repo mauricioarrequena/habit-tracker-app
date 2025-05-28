@@ -1,27 +1,26 @@
 import styles from "../styles/components/HabitCard.module.css";
 import type { Habit } from "../Types/Habit";
-import dayNames from "../data/days";
+import dayNames from "../data/Days";
 
 interface HabitCardProp {
   habit: Habit;
-  onToggle: (day: string) => void;
-  onEdit: (habit: Habit) => void;
-  onDelete: (habit: Habit) => void;
+  onChangeDayToggle: (day: string, habit: Habit) => void;
+  onClickEdit: (habit: Habit) => void;
+  onClickDelete: (habit: Habit) => void;
 }
 export default function HabitCard({
   habit,
-  onToggle,
-  onEdit,
-  onDelete
+  onChangeDayToggle,
+  onClickEdit,
+  onClickDelete,
 }: HabitCardProp) {
-
   return (
     <div className={styles["card"]}>
       <div
         className={styles["card__header"]}
         style={
           {
-            "--card-color": habit.color,
+            "--card-color": habit.hexColor,
           } as React.CSSProperties
         }
       >
@@ -38,13 +37,13 @@ export default function HabitCard({
         <div className={styles["header__controls"]}>
           <span
             className={`material-symbols-outlined ${styles["editIcon"]}`}
-            onClick={() => onEdit(habit)}
+            onClick={() => onClickEdit(habit)}
           >
             edit
           </span>
           <span
             className={`material-symbols-outlined ${styles["deleteIcon"]}`}
-            onClick={() => onDelete(habit)}
+            onClick={() => onClickDelete(habit)}
           >
             close
           </span>
@@ -60,13 +59,13 @@ export default function HabitCard({
                   type="checkbox"
                   checked={habit.completedDays.includes(dayName)}
                   className={styles["checkboxInput"]}
-                  onChange={() => onToggle(dayName)}
+                  onChange={() => onChangeDayToggle(dayName, habit)}
                 />
                 <span
                   className={styles["checkboxCustom"]}
                   style={
                     {
-                      "--card-color": habit.color,
+                      "--card-color": habit.hexColor,
                     } as React.CSSProperties
                   }
                 ></span>
@@ -80,7 +79,7 @@ export default function HabitCard({
               className={styles["progressBar__fill"]}
               style={
                 {
-                  "--card-color": habit.color,
+                  "--card-color": habit.hexColor,
                   "--progress": `${(habit.completedDays.length / 7) * 100}%`,
                 } as React.CSSProperties
               }
