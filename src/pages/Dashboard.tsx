@@ -8,7 +8,7 @@ import type { Habit } from "../Types/Habit";
 import { ModeEnum } from "../enums/Mode.enum";
 import { useEffect, useState } from "react";
 
-import { habitService } from "../services/habitService";
+import { habitService } from "../services/HabitService";
 
 export default function Dashboard() {
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
@@ -81,11 +81,15 @@ export default function Dashboard() {
     );
   };
 
+  const handleOnClickCancel = () => {
+    setModalContent(null);
+  };
+
   const handleOnClickDelete = (habitToDelete: Habit) => {
     showModalWithContent(
       <DeleteHabit
-        onCancel={() => setModalContent(null)}
-        onConfirm={() => {
+        onClickCancel={handleOnClickCancel}
+        onClickConfirm={() => {
           const updatedHabits = habits.filter((h) => h.id !== habitToDelete.id);
           localStorage.setItem("habits", JSON.stringify(updatedHabits));
           setHabits(updatedHabits);

@@ -6,13 +6,14 @@ export default function Sidebar() {
     <div className={styles.sidebar}>
       <ul className={styles.sidebarList}>
         <li className={styles.item}>
-          <Link className={styles.navButton} to="/">Dashboard</Link>
+          <Link className={styles.navButton} to="/">
+            Dashboard
+          </Link>
         </li>
         <li className={styles.item}>
-          <Link className={styles.navButton} to="/canvas">Canvas</Link>
-        </li>
-        <li className={styles.item}>
-          <Link className={styles.navButton} to="/settings">Settings</Link>
+          <Link className={styles.navButton} to="/settings">
+            Settings
+          </Link>
         </li>
       </ul>
     </div>

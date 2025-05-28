@@ -1,7 +1,7 @@
 import styles from "../styles/components/AddHabit.module.css";
 import type { Habit } from "../Types/Habit";
 import colors from "../data/Colors";
-import { habitService } from "../services/habitService";
+import { habitService } from "../services/HabitService";
 import { useState, useEffect, useRef } from "react";
 import type { Color } from "../Types/Color";
 import { ModeEnum } from "../enums/Mode.enum";
