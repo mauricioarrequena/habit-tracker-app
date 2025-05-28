@@ -6,6 +6,7 @@ import Modal from "../components/Modal";
 import type { Habit } from "../Types/Habit";
 import { useEffect, useState } from "react";
 import DeleteHabit from "../components/DeleteHabit";
+import { ModeEnum } from "../enums/Mode.enum";
 
 export default function Dashboard() {
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
@@ -30,7 +31,7 @@ export default function Dashboard() {
     );
     localStorage.setItem("habits", JSON.stringify(updatedHabits));
     setHabits(updatedHabits);
-    setModalContent(null)
+    setModalContent(null);
   };
 
   const handleEditHabitCardForHabitCard = (selectedHabit: Habit) => {
@@ -38,8 +39,8 @@ export default function Dashboard() {
     setSelectedHabit(foundHabit);
     showModalWithContent(
       <AddHabit
-        mode="edit"
-        habitToEditId={foundHabit.id}
+        mode={ModeEnum.EDIT}
+        habitId={foundHabit.id}
         onSubmitEdit={handleOnSubmitEditForAddHabit}
       />
     );
@@ -91,7 +92,7 @@ export default function Dashboard() {
       <DeleteHabit
         onCancel={() => setModalContent(null)}
         onConfirm={() => {
-          const updatedHabits = habits.filter(h => h.id !== habitToDelete.id);
+          const updatedHabits = habits.filter((h) => h.id !== habitToDelete.id);
           localStorage.setItem("habits", JSON.stringify(updatedHabits));
           setHabits(updatedHabits);
           setModalContent(null);
@@ -114,19 +115,15 @@ export default function Dashboard() {
             <HabitCard
               key={habit.id}
               habit={habit}
-              onToggle={(day) =>
-                handleOnToggleDayForHabitCard(habit.id, day)
-              }
+              onToggle={(day) => handleOnToggleDayForHabitCard(habit.id, day)}
               onEdit={handleEditHabitCardForHabitCard}
               onDelete={handleDeleteHabit}
-              />
+            />
           );
         })}
       </div>
       {modalContent && (
-        <Modal onClose={() => setModalContent(null)}>
-          {modalContent}
-        </Modal>
+        <Modal onClose={() => setModalContent(null)}>{modalContent}</Modal>
       )}
     </div>
   );

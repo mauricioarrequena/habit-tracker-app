@@ -1,6 +1,7 @@
 import styles from "../styles/components/HabitCard.module.css";
 import type { Habit } from "../Types/Habit";
-import dayNames from "../data/days";
+import dayNames from "../data/Days";
+
 interface HabitCardProp {
   habit: Habit;
   onToggle: (day: string) => void;
@@ -19,7 +20,7 @@ export default function HabitCard({
         className={styles["card__header"]}
         style={
           {
-            "--card-color": habit.color,
+            "--card-color": habit.hexColor,
           } as React.CSSProperties
         }
       >
@@ -64,7 +65,7 @@ export default function HabitCard({
                   className={styles["checkboxCustom"]}
                   style={
                     {
-                      "--card-color": habit.color,
+                      "--card-color": habit.hexColor,
                     } as React.CSSProperties
                   }
                 ></span>
@@ -78,7 +79,7 @@ export default function HabitCard({
               className={styles["progressBar__fill"]}
               style={
                 {
-                  "--card-color": habit.color,
+                  "--card-color": habit.hexColor,
                   "--progress": `${(habit.completedDays.length / 7) * 100}%`,
                 } as React.CSSProperties
               }
