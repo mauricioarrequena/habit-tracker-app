@@ -79,8 +79,9 @@ export default function HabitCard({
             );
           })}
         </div>
-        <div className={styles.progressBar}>
-          <div className={styles.progressBar__track}>
+
+        <div className={styles.progressSection}>
+          <div className={styles.progressBar}>
             <div
               className={styles.progressBar__fill}
               style={
@@ -95,6 +96,7 @@ export default function HabitCard({
             {habit.completedDays.length}/7 days completed
           </span>
         </div>
+
       </div>
     </div>
   );
